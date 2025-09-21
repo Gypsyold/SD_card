@@ -112,7 +112,7 @@ int main(void)
   MX_USART1_UART_Init();
   /* USER CODE BEGIN 2 */
 
-    setvbuf(stdout, NULL, _IONBF, 0);
+//    setvbuf(stdout, NULL, _IONBF, 0);
     printf("初始化完毕\n\r");
 	
     SDCard_ShowInfo();

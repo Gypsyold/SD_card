@@ -1,0 +1,8 @@
+{
+    "files.associations": {
+        "stm32f4xx_hal.h": "c",
+        "stdio.h": "c",
+        "main.h": "c",
+        "sd_card.h": "c"
+    }
+}
