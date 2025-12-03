@@ -3,8 +3,8 @@
 
 #include "main.h"
 
-extern uint8_t SDBuf_RX[BLOCKSIZE];
-extern uint8_t dma_rx_done;
+
+
 
 uint8_t TF_Card_Detect(void);
 
@@ -16,7 +16,7 @@ void SDCard_TestRead(void);         //测试从SD卡指定块读取数据
 void SDCard_TestWrite_DMA(void);         //使用DMA方式从SD卡读取数据
 void SDCard_TestRead_DMA(void);         //使用DMA方式从SD卡读取数据
 
-void HAL_SD_RxCpltCallback(SD_HandleTypeDef *hsd);
-void HAL_SD_TxCpltCallback(SD_HandleTypeDef *hsd);
+//void HAL_SD_RxCpltCallback(SD_HandleTypeDef *hsd);
+//void HAL_SD_TxCpltCallback(SD_HandleTypeDef *hsd);
 
 #endif

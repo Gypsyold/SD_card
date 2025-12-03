@@ -230,7 +230,7 @@ void SDCard_TestRead(void)
  * @param  无
  * @retval 无
  */
-void SDCard_TestWrite_DMA(void)
+ void SDCard_TestWrite_DMA(void)
 {
     // 打印提示信息，表明开始执行DMA块写入操作
     printf( "*** DMA Writing blocks ***\r\n");
@@ -307,7 +307,7 @@ void SDCard_TestRead_DMA()
 
 	
     // 定义要读取的目标块地址（此处为块6，与DMA写入的块地址对应）
-    uint32_t BlockAdd = 2;
+    uint32_t BlockAdd = 6;
     
     // 定义要读取的块数量（此处读取1个块，与DMA写入的块数量对应）
     uint32_t NumberOfBlocks = 1;
@@ -315,14 +315,14 @@ void SDCard_TestRead_DMA()
     // 调用HAL库的DMA方式读取函数
     // 参数：SD卡句柄(hsd)、接收缓冲区(SDBuf_RX，全局变量)、目标块地址、块数量
     // 该函数会启动DMA传输，无需等待完成即可返回，传输完成后会触发回调函数
-//    HAL_SD_ReadBlocks_DMA(&hsd, SDBuf_RX, BlockAdd, NumberOfBlocks);
-	    HAL_StatusTypeDef res = HAL_SD_ReadBlocks_DMA(&hsd, SDBuf_RX, BlockAdd, NumberOfBlocks);
-    printf("HAL_SD_ReadBlocks_DMA返回: %d\r\n", res);
+    HAL_SD_ReadBlocks_DMA(&hsd, SDBuf_RX, BlockAdd, NumberOfBlocks);
+	    
+   
 	
 }
 
 
-uint8_t dma_rx_done = 0;
+
 /**
  * @brief  SD卡DMA接收完成回调函数
  * @note   当SD卡通过DMA方式完成数据接收后，HAL库会自动调用此回调函数
@@ -347,6 +347,6 @@ void HAL_SD_RxCpltCallback(SD_HandleTypeDef *hsd)
     
     // 提示用户可重新选择菜单项或复位系统
     printf("Reselect menu item or reset\r\n");
-		dma_rx_done += 1;
+
 }
 

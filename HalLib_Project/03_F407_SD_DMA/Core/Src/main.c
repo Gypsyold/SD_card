@@ -153,12 +153,14 @@ int main(void)
 		{
         	printf("\r\n");
             SDCard_ShowInfo();
+			printf("Reselect menu item or reset\r\n");
 			printf("\r\n");
            
         } else if (waitKey == KEY_DOWN) 
 		{
 			printf("\r\n");
             SDCard_EraseBlocks();
+			printf("Reselect menu item or reset\r\n");
 			printf("\r\n");
             
         } else if (waitKey == KEY_LEFT) 
@@ -170,7 +172,7 @@ int main(void)
 		{
 			printf("\r\n");
             SDCard_TestRead_DMA();
-			printf("dma_rx_done = %d\r\n",dma_rx_done);
+			
 			printf("\r\n");
         }
         HAL_Delay(500);	  
@@ -254,7 +256,7 @@ static void MX_SDIO_SD_Init(void)
   {
     Error_Handler();
   }
-  if (HAL_SD_ConfigWideBusOperation(&hsd, SDIO_BUS_WIDE_1B) != HAL_OK)
+  if (HAL_SD_ConfigWideBusOperation(&hsd, SDIO_BUS_WIDE_4B) != HAL_OK)
   {
     Error_Handler();
   }
