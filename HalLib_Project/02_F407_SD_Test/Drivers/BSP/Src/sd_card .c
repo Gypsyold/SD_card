@@ -101,10 +101,12 @@ void SDCard_EraseBlocks(void)
     HAL_StatusTypeDef res = HAL_SD_Erase(&hsd, BlockStartAdd, BlockEndAdd);
     
     // 检查擦除操作是否成功
-    if (res == HAL_OK) {
+    if (res == HAL_OK) 
+	{
         // 擦除成功，打印提示信息
         printf( "Erase blocks success\r\n");
-    } else {
+    } else 
+	{
         // 擦除失败，打印错误信息
         printf("Erase blocks error\r\n");
     }
@@ -117,7 +119,8 @@ void SDCard_EraseBlocks(void)
     
     // 等待SD卡状态变为"传输就绪"（HAL_SD_CARD_TRANSFER）
     // 擦除操作可能需要一定时间，需等待操作完成
-    while (cardState != HAL_SD_CARD_TRANSFER) {
+    while (cardState != HAL_SD_CARD_TRANSFER) 
+	{
         // 延时1毫秒后再次检查状态
         HAL_Delay(1);
         cardState = HAL_SD_GetCardState(&hsd);
@@ -161,12 +164,14 @@ void SDCard_TestWrite(void)
     HAL_StatusTypeDef res = HAL_SD_WriteBlocks(&hsd, pData, BlockAdd, NumberOfBlocks, Timeout);
     
     // 检查写入操作是否成功
-    if (res == HAL_OK) {
+    if (res == HAL_OK) 
+	{
         // 写入成功，打印提示信息
         printf("Write to Block 5 is OK\r\n");
         // 打印写入的字符串内容
         printf("The string is : %s\r\n", pData);
-    } else {
+    } else 
+	{
         // 写入失败，打印错误信息
         printf("Write to Block 5 is error\r\n");
     }
