@@ -22,6 +22,9 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
+#include "file_opera.h"
+#include "keyled.h"
+#include "sd_card.h"
 
 /* USER CODE END Includes */
 
@@ -32,6 +35,13 @@
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
+
+ 
+ #ifdef __GNUC__
+     #define PUTCHAR_PROTOTYPE int _io_putchar(int ch)
+ #else
+     #define PUTCHAR_PROTOTYPE int fputc(int ch, FILE *f)
+ #endif 
 
 /* USER CODE END PD */
 
@@ -63,7 +73,13 @@ static void MX_RTC_Init(void);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
-
+	PUTCHAR_PROTOTYPE
+	{
+	 HAL_UART_Transmit(&huart1, (uint8_t *)&ch,1,0xFFFF);
+	 return ch;
+	}
+ 
+	BYTE workBuffer[4 * BLOCKSIZE];
 /* USER CODE END 0 */
 
 /**
@@ -100,11 +116,114 @@ int main(void)
   MX_RTC_Init();
   MX_FATFS_Init();
   /* USER CODE BEGIN 2 */
+  
+	printf("Demo04: FatFS on SD card\r\n");
+	FRESULT res = f_mount(&SDFatFS, "0:", 1);
+	if (res == FR_OK) {
+		printf("FatFS mount OK\r\n");
+	} else {
+		printf("No file system\r\n");
+	}
 
+	printf("[1] KeyUp = Format SD card\r\n");
+	printf("[2] KeyLeft = FAT disk info\r\n");
+	printf("[3] KeyRight = SD card info\r\n");
+	printf("[4] KeyDown = Next menu page\r\n");
+
+	KEYS waitKey;
   /* USER CODE END 2 */
 
+	
+	
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
+	while (1)
+	{
+		waitKey = ScanPressedKey(KEY_WAIT_ALWAYS);
+		if (waitKey == KEY_UP)
+		{
+			printf("\r\n");
+			DWORD cluster_size = 0;
+			printf("Formatting the chip...\r\n");
+			FRESULT res = f_mkfs("0:", FM_FAT32, cluster_size, workBuffer, 4 * BLOCKSIZE);
+			if (res == FR_OK)
+			{
+				printf("Format OK, to reset\r\n");
+			}
+			else
+			{
+				printf("Format Fail, to reset\r\n");
+			}
+
+		}
+		else if (waitKey == KEY_DOWN)
+		{
+			printf("\r\n");
+			fatTest_GetDiskInfo();
+
+		}
+		else if (waitKey == KEY_LEFT)
+		{
+			printf("\r\n");
+			SDCard_ShowInfo();
+
+		}
+		else if (waitKey == KEY_RIGHT)
+		{
+			break;
+		}
+		printf("Reselect menu item or reset\r\n");
+		printf("\r\n");
+		HAL_Delay(500);
+	}
+
+	printf("[5] KeyUp = Write files          \r\n");
+	printf("[6] KeyLeft = Read a TXT file    \r\n");
+	printf("[7] KeyRight = Read a BIN file   \r\n");
+	printf("[8] KeyDown = Get a file info    \r\n");
+	HAL_Delay(500);
+
+	while (1)
+	{
+		waitKey = ScanPressedKey(KEY_WAIT_ALWAYS);
+		if (waitKey == KEY_UP)
+		{
+			printf("\r\n");
+			fatTest_WriteTXTFile("readme.txt", 2019, 3, 5);
+			printf("Write file OK: readme.txt\r\n");
+			fatTest_WriteTXTFile("help.txt", 2016, 11, 15);
+			printf("Write file OK: help.txt\r\n");
+			fatTest_WriteBinFile("ADC500.dat", 20, 500);
+			printf("Write file OK: ADC500.dat\r\n");
+			fatTest_WriteBinFile("ADC1000.dat", 50, 1000);
+			printf("Write file OK: ADC1000.dat\r\n");
+			f_mkdir("0:/SubDir1");
+			f_mkdir("0:/MyDocs");
+
+		}
+		else if (waitKey == KEY_LEFT)
+		{
+			printf("\r\n");
+			fatTest_ReadTXTFile("readme.txt");
+
+		}
+		else if (waitKey == KEY_RIGHT)
+		{
+			printf("\r\n");
+			fatTest_ReadBinFile("ADC500.dat");
+
+		}
+		else if (waitKey == KEY_DOWN)
+		{
+			printf("\r\n");
+			fatTest_GetFileInfo("ADC1000.dat");
+
+		}
+		printf("Reselect menu item or reset\r\n");
+		printf("\r\n");
+		HAL_Delay(500);
+	}	
+		
   while (1)
   {
     /* USER CODE END WHILE */

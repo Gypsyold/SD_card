@@ -31,7 +31,7 @@ extern "C" {
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-
+#include <stdio.h>
 /* USER CODE END Includes */
 
 /* Exported types ------------------------------------------------------------*/
@@ -69,7 +69,11 @@ void Error_Handler(void);
 #define SD_Detect_GPIO_Port GPIOD
 
 /* USER CODE BEGIN Private defines */
+extern RTC_HandleTypeDef hrtc;
 
+extern SD_HandleTypeDef hsd;
+
+extern UART_HandleTypeDef huart1;
 /* USER CODE END Private defines */
 
 #ifdef __cplusplus
