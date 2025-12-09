@@ -477,6 +477,7 @@ void APP_TaskMain(void *argument)
 		printf("Reselect menu item or reset\r\n");
 		vTaskDelay(500);
 	}
+  
   /* USER CODE END 5 */
 }
 
